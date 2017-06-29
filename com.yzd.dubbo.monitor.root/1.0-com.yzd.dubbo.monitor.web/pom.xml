@@ -33,6 +33,10 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <!--打包后拷贝到指定目录-->
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
 </project>

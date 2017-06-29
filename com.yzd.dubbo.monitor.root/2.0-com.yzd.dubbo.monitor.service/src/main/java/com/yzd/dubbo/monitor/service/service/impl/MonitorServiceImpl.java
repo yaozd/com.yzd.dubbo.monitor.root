@@ -24,18 +24,22 @@ import java.util.List;
  */
 public class MonitorServiceImpl implements MonitorService {
     private static final Logger logger = LoggerFactory.getLogger(MonitorServiceImpl.class);
-    private static final String POISON_PROTOCOL = "poison";
+    private static final String COUNT_PROTOCOL = "count";
+
     @Override
     public void collect(URL statistics) {
         logger.info(String.valueOf(FSTSeriazle.serialize(statistics)));
         logger.info(String.valueOf(FastJsonUtil.serialize(statistics)));
         logger.info(statistics.toFullString());
-        if(statistics==null)return;
-        if (POISON_PROTOCOL.equals(statistics.getProtocol()))return;
+        if (statistics == null) return;
+        if (!COUNT_PROTOCOL.equals(statistics.getProtocol())) {
+            logger.info("COUNT-PROTOCOL IS NOT:" + String.valueOf(FastJsonUtil.serialize(statistics)));
+            return;
+        }
         InvokeDO dubboInvoke = toInvokeDO(statistics);
         //todo 调试代码
         logger.info(String.valueOf(FastJsonUtil.serialize(dubboInvoke)));
-        if(dubboInvoke==null)return;
+        if (dubboInvoke == null) return;
         ShardedRedisMqUtil redisUtil = ShardedRedisMqUtil.getInstance();
         redisUtil.lpush(PubConfig.MonitorListKey, StringUtil.byteToString(FSTSeriazle.serialize(dubboInvoke)));
     }
@@ -44,7 +48,8 @@ public class MonitorServiceImpl implements MonitorService {
     public List<URL> lookup(URL url) {
         return null;
     }
-    public static InvokeDO toInvokeDO(URL statistics){
+
+    public static InvokeDO toInvokeDO(URL statistics) {
         InvokeDO dubboInvoke = new InvokeDO();
         dubboInvoke.setUuId(UUIDGenerator.getUUID());
         dubboInvoke.setApplication(statistics.getParameter(APPLICATION, ""));
@@ -62,38 +67,53 @@ public class MonitorServiceImpl implements MonitorService {
                 && dubboInvoke.getConcurrent() == 0 && dubboInvoke.getMaxElapsed() == 0 && dubboInvoke.getMaxConcurrent() == 0) {
             return null;
         }
+        setAppTypeInfo(statistics, dubboInvoke);
+        setAppTimeInfo(statistics, dubboInvoke);
         //
-        if (statistics.hasParameter(PROVIDER)) {
-            dubboInvoke.setAppType(CONSUMER);
-            dubboInvoke.setConsumerHost(statistics.getHost());
-            String provider = statistics.getParameter(PROVIDER);
-            int i = provider.indexOf(':');
-            if (i > 0) {
-                String[] providerArray = provider.split(":");
-                dubboInvoke.setProviderHost(providerArray[0]);
-                dubboInvoke.setProviderPort(providerArray[1]);
-            }else{
-                dubboInvoke.setProviderHost(provider);
-            }
-        }
-        //
+        return dubboInvoke;
+    }
+    //设置时间信息
+    private static void setAppTimeInfo(URL statistics, InvokeDO dubboInvoke) {
         String timestamp = statistics.getParameter(Constants.TIMESTAMP_KEY);
         Date now;
         if (timestamp == null || timestamp.length() == 0) {
             now = new Date();
-        }else if (timestamp.length() == "yyyyMMddHHmmss".length()) {
+        } else if (timestamp.length() == "yyyyMMddHHmmss".length()) {
             try {
                 now = new SimpleDateFormat("yyyyMMddHHmmss").parse(timestamp);
             } catch (ParseException e) {
-               throw new IllegalStateException(e);
+                throw new IllegalStateException(e);
             }
-        }  else {
+        } else {
             now = new Date(Long.parseLong(timestamp));
         }
         String date = TimeUtil.getDateString(now);
         String hour = TimeUtil.getHourString(now);
         dubboInvoke.setInvokeDate(date);
         dubboInvoke.setInvokeHour(hour);
-        return dubboInvoke;
+    }
+    //设置ip地址，调用者类型信息
+    private static void setAppTypeInfo(URL statistics, InvokeDO dubboInvoke) {
+        final String consumerPort="0";
+        if (statistics.getPort() == 0) {
+            dubboInvoke.setAppType(CONSUMER);
+            dubboInvoke.setConsumerHost(statistics.getHost());
+            dubboInvoke.setConsumerPort(consumerPort);
+            String provider = statistics.getParameter(PROVIDER);
+            int i = provider.indexOf(':');
+            if (i > 0) {
+                String[] providerArray = provider.split(":");
+                dubboInvoke.setProviderHost(providerArray[0]);
+                dubboInvoke.setProviderPort(providerArray[1]);
+            }
+            return;
+        }
+        //
+        dubboInvoke.setAppType(PROVIDER);
+        dubboInvoke.setProviderHost(statistics.getHost());
+        dubboInvoke.setProviderPort(String.valueOf(statistics.getPort()));
+        dubboInvoke.setConsumerHost(statistics.getParameter(CONSUMER));
+        dubboInvoke.setConsumerPort(consumerPort);
+
     }
 }

@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://code.alibabatech.com/schema/dubbo
-        http://code.alibabatech.com/schema/dubbo/dubbo.xsd ">
-    <!-- 提供方应用信息，用于计算依赖关系 -->
-    <dubbo:application name="com.yzd.dubbo.monitor.provider" logger="slf4j" organization="org-yzd" owner="master-yzd"/>
-    <!-- zookeeper注册中心 -->
-    <!--去掉超时重试机制-->
-    <dubbo:provider retries="0" timeout="60000" />
-    <dubbo:registry protocol="zookeeper" address="127.0.0.1:2181" group="dev"/>
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
     <!--<dubbo:registry protocol="zookeeper" address="192.168.3.244:2181" />-->
     <!--
     <dubbo:registry protocol="zookeeper" address="127.0.0.1:2181" />
@@ -35,6 +30,12 @@
     <!--loadbalance="random":负载均衡-->
     <!--<dubbo:service interface="com.example.dubbo.service.inf.IProviderServiceInf" ref="IProviderServiceInf" version="1.0.1" token="yklo" loadbalance="random"/>-->
     <!--<dubbo:service interface="com.example.dubbo.service.inf.IProviderServiceInf" ref="IProviderServiceInf" version="1.0.1"  loadbalance="random"  owner="yzd"/>-->
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <context:property-placeholder location="classpath:/dubbo.properties"/>
+    <dubbo:application name="com.yzd.dubbo.monitor.provider" logger="slf4j" organization="org-yzd" owner="master-yzd"/>
+    <dubbo:registry  id="defaultRegister" protocol="zookeeper"  address="${dubbo.registry.default.address}" group="${dubbo.registry.group}" />
+    <dubbo:protocol name="dubbo" port="${dubbo.protocol.port}" payload="8388608"/>
+    <dubbo:provider retries="0" timeout="60000" />
     <dubbo:service interface="com.alibaba.dubbo.monitor.MonitorService" ref="monitorService"  timeout="60000"/>
     <bean id="monitorService" class="com.yzd.dubbo.monitor.service.service.impl.MonitorServiceImpl" />
 </beans>
