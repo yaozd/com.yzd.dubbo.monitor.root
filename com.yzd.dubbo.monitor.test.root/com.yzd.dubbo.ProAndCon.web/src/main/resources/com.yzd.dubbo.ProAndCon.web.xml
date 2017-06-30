@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd ">
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="com.yzd.dubbo.ProAndCon.web" logger="slf4j" organization="org-yzd" owner="master-yzd"/>
+    <!-- zookeeper注册中心 -->
+    <!--去掉超时重试机制-->
+    <dubbo:provider retries="0" timeout="60000" />
+    <dubbo:registry protocol="zookeeper" address="127.0.0.1:2181" group="monitor"/>
+    <dubbo:protocol name="dubbo" port="29002" />
+    <dubbo:consumer check="false" />
+    <dubbo:monitor protocol="registry"/>
+    <!--<dubbo:registry protocol="zookeeper" address="192.168.3.244:2181" />-->
+    <!--
+    <dubbo:registry protocol="zookeeper" address="127.0.0.1:2181" />
+    -->
+    <!-- 使用multicast广播注册中心暴露服务地址 -->
+    <!-- <dubbo:registry address="multicast://10.57.41.19:1234" /> -->
+
+    <!--<dubbo:monitor protocol="registry"/>-->
+
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <!--
+    <dubbo:protocol name="dubbo" port="29014" />
+    -->
+    <!--dubbo -payload默认为8M-->
+    <!--<dubbo:protocol name="dubbo" port="20880" payload="8388608"/>-->
+    <!--为了测试上传文件刻意将payload调整为40M，但实践开发过程中这样调整很容易造成程序内存溢出-payload默认为8M-->
+    <!--<dubbo:protocol name="dubbo" port="20880" payload=" 42524768"/>-->
+
+    <!-- 声明需要暴露的服务接口 -->
+    <!--version="1.0.1":当然服务的版本号-->
+    <!--token="yklo":开启令牌认证-随机token令牌,防止消费者绕过注册中心直接访问提供者-->
+    <!--loadbalance="random":负载均衡-->
+    <!--<dubbo:service interface="com.example.dubbo.service.inf.IProviderServiceInf" ref="IProviderServiceInf" version="1.0.1" token="yklo" loadbalance="random"/>-->
+    <!--<dubbo:service interface="com.example.dubbo.service.inf.IProviderServiceInf" ref="IProviderServiceInf" version="1.0.1"  loadbalance="random"  owner="yzd"/>-->
+    <dubbo:service interface="com.yzd.dubbo.service.inf.ProAndConServiceInf" ref="ProAndConServiceInf"  timeout="60000" version="1.0.1"/>
+    <bean id="ProAndConServiceInf" class="com.yzd.dubbo.ProAndCon.web.ProAndConServiceImpl" />
+    <!--consumer-->
+    <dubbo:reference id="ProviderServiceInf" interface="com.yzd.dubbo.service.inf.ProviderServiceInf" version="1.0.1" />
+</beans>

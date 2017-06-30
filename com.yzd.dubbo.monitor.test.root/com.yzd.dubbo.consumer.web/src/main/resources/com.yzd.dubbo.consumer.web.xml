@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd ">
+    <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+    <dubbo:application name="com.yzd.dubbo.consumer.web" logger="slf4j"/>
+    <!--check="false":dubbo接口懒惰,惰性检查,懒加载,接口检查,服务检查.开启.启用,打开-->
+    <!--timeout="10000":远程调用的超时时间为10秒-->
+    <dubbo:consumer check="false" />
+    <!-- 使用multicast广播注册中心暴露发现服务地址 -->
+    <!--<dubbo:registry protocol="zookeeper" address="192.168.3.244:2181" />-->
+    <dubbo:registry protocol="zookeeper" address="127.0.0.1:2181" group="monitor" />
+    <!--<dubbo:monitor protocol="registry"/>-->
+    <!-- 生成远程服务代理，可以和本地bean一样使用demoService -->
+
+    <!--<dubbo:monitor protocol="registry"/>-->
+
+    <!--version="1.0.1":当然服务的版本号-->
+    <!--<dubbo:reference id="ITestDataServiceInf" interface="com.yzd.dubbo.service.inf.test.ITestDataServiceInf" version="1.0.1">-->
+    <!--url="dubbo://localhost:29014":直连提供者-这个功能为开发测试用的，绕过注册中心，只测试指定服务提供者。（令牌验证-防止消费者绕过注册中心访问提供者）-->
+    <!--<dubbo:reference id="IProviderServiceInf" interface="com.example.dubbo.service.inf.IProviderServiceInf" version="1.0.1" url="dubbo://localhost:29014" >-->
+    <!--timeout="50000":远程调用的超时时间为50秒，单个方法的超时时间是优于整体的超时时间-->
+    <!--<dubbo:method name="insert" timeout="50000"/>-->
+    <!--</dubbo:reference>-->
+    <dubbo:reference id="ProviderServiceInf" interface="com.yzd.dubbo.service.inf.ProviderServiceInf" version="1.0.1" />
+    <dubbo:reference id="ProAndConServiceInf" interface="com.yzd.dubbo.service.inf.ProAndConServiceInf" version="1.0.1" />
+</beans>

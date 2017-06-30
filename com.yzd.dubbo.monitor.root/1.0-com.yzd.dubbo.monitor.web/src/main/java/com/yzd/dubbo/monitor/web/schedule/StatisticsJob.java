@@ -41,6 +41,7 @@ public class StatisticsJob {
                 throw new IllegalStateException(e);
             } finally {
                 if (listInvokeDO.size() > 0) {
+                    logger.info("===listInvokeDO.size()="+listInvokeDO.size());
                 }
             }
         }
