@@ -25,6 +25,13 @@ import java.util.concurrent.CountDownLatch;
 @Service
 public class StatisticsJob {
     private static final Logger logger = LoggerFactory.getLogger(StatisticsJob.class);
+    /**
+     * 使用batch insert解决MySQL的insert吞吐量问题
+     * http://blog.csdn.net/orion61/article/details/32108547
+     * 在我这个简单测试场景中，values number最合适的值是50，和单values对比，耗时减少 97% ，insert吞吐量提升 36倍 。
+     * @param recordList
+     */
+    private static int BATCH_MAX_COUNT=50;//批处理插入默认为50或者阻塞5秒触发;
     @Autowired
     private RedisServiceInf redisServiceInf;
     @Autowired
@@ -37,7 +44,7 @@ public class StatisticsJob {
         CountDownLatch latch;
         while (true) {
             listInvokeDO = new ArrayList<>();
-            latch = new CountDownLatch(100);
+            latch = new CountDownLatch(BATCH_MAX_COUNT);
             try {
                 getDataList(listInvokeDO, latch);
                 //todo 调试代码

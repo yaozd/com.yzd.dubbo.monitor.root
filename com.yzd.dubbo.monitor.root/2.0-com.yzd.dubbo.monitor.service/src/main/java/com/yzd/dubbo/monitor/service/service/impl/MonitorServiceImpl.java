@@ -92,6 +92,7 @@ public class MonitorServiceImpl implements MonitorService {
         String hour = TimeUtil.getHourString(now);
         dubboInvoke.setInvokeDate(date);
         dubboInvoke.setInvokeHour(hour);
+        dubboInvoke.setGmtCreate(now);
     }
     //设置ip地址，调用者类型信息
     private static void setAppTypeInfo(URL statistics, InvokeDO dubboInvoke) {

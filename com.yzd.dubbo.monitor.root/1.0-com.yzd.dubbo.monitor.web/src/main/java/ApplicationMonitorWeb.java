@@ -1,14 +1,20 @@
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
+ * @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
+ * 解决：
+ * The dependencies of some of the beans in the application context form a cycle
  * Created by zd.yao on 2017/6/26.
  */
 @SpringBootApplication
-@ComponentScan("com.yzd.dubbo.monitor.service,com.yzd.dubbo.monitor.web,")
+@ComponentScan("com.yzd.dubbo.monitor.web,com.yzd.dubbo.monitor.service")
+@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 @ImportResource("classpath:com.yzd.dubbo.monitor.provider.xml")
 @EnableScheduling
 public class ApplicationMonitorWeb {

@@ -3,6 +3,7 @@ package com.yzd.dubbo.monitor.service.dao.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  */
 @Data
 @NoArgsConstructor
-public class InvokeDO {
+public class InvokeDO implements Serializable {
 
     private String uuId;
 

@@ -16,6 +16,14 @@ public class InvokeServiceImpl implements InvokeServiceInf {
     @Autowired
     InvokeDOMapper invokeDOMapper;
 
+    /**
+     * MyBatis批量插入数据
+     * http://chenzhou123520.iteye.com/blog/1583407/
+     * 使用batch insert解决MySQL的insert吞吐量问题
+     * http://blog.csdn.net/orion61/article/details/32108547
+     * 在我这个简单测试场景中，values number最合适的值是50，和单values对比，耗时减少 97% ，insert吞吐量提升 36倍 。
+     * @param recordList
+     */
     @Override
     public void addRecordBatch(List<InvokeDO> recordList) {
         invokeDOMapper.addRecordBatch(recordList);
