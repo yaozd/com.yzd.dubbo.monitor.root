@@ -5,9 +5,11 @@ import com.yzd.dubbo.monitor.common.seriazle.FSTSeriazle;
 import com.yzd.dubbo.monitor.common.seriazle.FastJsonUtil;
 import com.yzd.dubbo.monitor.common.stringExt.StringUtil;
 import com.yzd.dubbo.monitor.service.dao.entity.InvokeDO;
-import com.yzd.frame.common.mq.redis.sharded.ShardedRedisMqUtil;
+import com.yzd.dubbo.monitor.service.service.inf.InvokeServiceInf;
+import com.yzd.dubbo.monitor.service.service.inf.RedisServiceInf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,10 @@ import java.util.concurrent.CountDownLatch;
 @Service
 public class StatisticsJob {
     private static final Logger logger = LoggerFactory.getLogger(StatisticsJob.class);
-
+    @Autowired
+    private RedisServiceInf redisServiceInf;
+    @Autowired
+    private InvokeServiceInf invokeServiceInf;
     @Scheduled(initialDelay = 3000, fixedDelay = 1000 * 15)
     public void saveData() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -41,6 +46,8 @@ public class StatisticsJob {
                 throw new IllegalStateException(e);
             } finally {
                 if (listInvokeDO.size() > 0) {
+                    //插入数据库
+                    invokeServiceInf.addRecordBatch(listInvokeDO);
                     logger.info("===listInvokeDO.size()="+listInvokeDO.size());
                 }
             }
@@ -49,9 +56,8 @@ public class StatisticsJob {
 
     private void getDataList(List<InvokeDO> listUrl, CountDownLatch latch) {
         while (latch.getCount() > 0) {
-            ShardedRedisMqUtil redisUtil = ShardedRedisMqUtil.getInstance();
             //尾部拉取阻塞时间为5秒
-            String result = redisUtil.brpop(5, PubConfig.MonitorListKey);
+            String result = redisServiceInf.brpop(5, PubConfig.MonitorListKey);
             if (result == null) {
                 break;
             }

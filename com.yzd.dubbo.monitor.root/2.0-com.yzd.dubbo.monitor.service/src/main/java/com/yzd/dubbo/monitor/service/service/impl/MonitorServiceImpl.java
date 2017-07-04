@@ -13,6 +13,7 @@ import com.yzd.dubbo.monitor.common.timeExt.TimeUtil;
 import com.yzd.dubbo.monitor.common.uuid.UUIDGenerator;
 import com.yzd.dubbo.monitor.service.dao.entity.InvokeDO;
 import com.yzd.frame.common.mq.redis.sharded.ShardedRedisMqUtil;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,7 +33,7 @@ public class MonitorServiceImpl implements MonitorService {
         logger.info(String.valueOf(FastJsonUtil.serialize(statistics)));
         logger.info(statistics.toFullString());
         if (statistics == null) return;
-        if (!COUNT_PROTOCOL.equals(statistics.getProtocol())) {
+        if(ObjectUtils.notEqual(COUNT_PROTOCOL,statistics.getProtocol())){
             logger.info("COUNT-PROTOCOL IS NOT:" + String.valueOf(FastJsonUtil.serialize(statistics)));
             return;
         }

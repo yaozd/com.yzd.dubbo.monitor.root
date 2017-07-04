@@ -1,0 +1,77 @@
+-----------------------------
+提供者：
+{
+  "absolutePath": "/com.hb.insure.id.generator.service.inf.IIdGeneratorServiceInf/generateId",
+  "address": "192.168.3.45:29016",
+  "anyHost": false,
+  "backupAddress": "192.168.3.45:29016",
+  "backupUrls": [
+    {
+      "$ref": ".."
+    }
+  ],
+  "host": "192.168.3.45",
+  "localHost": false,
+  "parameters": {
+    "method": "generateId",
+    "concurrent": "0",
+    "interface": "com.hb.insure.id.generator.service.inf.IIdGeneratorServiceInf",
+    "elapsed": "0",
+    "output": "0",
+    "max.concurrent": "0",
+    "input": "0",
+    "application": "com.hb.insure.id.generator.service.provider",
+    "success": "0",
+    "failure": "0",
+    "max.elapsed": "0",
+    "max.input": "0",
+    "max.output": "0",
+    "consumer": "192.168.3.45",
+    "timestamp": "1498632757169"
+  },
+  "path": "com.hb.insure.id.generator.service.inf.IIdGeneratorServiceInf/generateId",
+  "port": 29016,
+  "protocol": "count",
+  "serviceInterface": "com.hb.insure.id.generator.service.inf.IIdGeneratorServiceInf",
+  "serviceKey": "com.hb.insure.id.generator.service.inf.IIdGeneratorServiceInf",
+  "serviceName": "com.hb.insure.id.generator.service.inf.IIdGeneratorServiceInf"
+}
+-----------------------------
+消费者：
+{
+  "absolutePath": "/com.hb.insure.id.generator.service.inf.IIdGeneratorServiceInf/generateId",
+  "address": "192.168.3.45",
+  "anyHost": false,
+  "backupAddress": "192.168.3.45",
+  "backupUrls": [
+    {
+      "$ref": ".."
+    }
+  ],
+  "host": "192.168.3.45",
+  "localHost": false,
+  "parameters": {
+    "method": "generateId",
+    "concurrent": "0",
+    "interface": "com.hb.insure.id.generator.service.inf.IIdGeneratorServiceInf",
+    "elapsed": "0",
+    "output": "0",
+    "max.concurrent": "0",
+    "input": "0",
+    "application": "com.hb.insure.id.generator.service.consumer",
+    "provider": "192.168.3.45:29016",
+    "success": "0",
+    "failure": "0",
+    "max.elapsed": "0",
+    "max.input": "0",
+    "max.output": "0",
+    "timestamp": "1498636140987"
+  },
+  "path": "com.hb.insure.id.generator.service.inf.IIdGeneratorServiceInf/generateId",
+  "port": 0,
+  "protocol": "count",
+  "serviceInterface": "com.hb.insure.id.generator.service.inf.IIdGeneratorServiceInf",
+  "serviceKey": "com.hb.insure.id.generator.service.inf.IIdGeneratorServiceInf",
+  "serviceName": "com.hb.insure.id.generator.service.inf.IIdGeneratorServiceInf"
+}
+-----------------------------

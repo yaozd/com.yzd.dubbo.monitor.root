@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * Created by zd.yao on 2017/6/26.
  */
 @SpringBootApplication
-@ComponentScan("com.yzd.dubbo.monitor.web")
+@ComponentScan("com.yzd.dubbo.monitor.service,com.yzd.dubbo.monitor.web,")
 @ImportResource("classpath:com.yzd.dubbo.monitor.provider.xml")
 @EnableScheduling
 public class ApplicationMonitorWeb {
