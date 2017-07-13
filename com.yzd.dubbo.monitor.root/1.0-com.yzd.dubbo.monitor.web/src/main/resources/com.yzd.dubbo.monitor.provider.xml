@@ -33,9 +33,10 @@
     <!-- 提供方应用信息，用于计算依赖关系 -->
     <context:property-placeholder location="classpath:/dubbo.properties"/>
     <dubbo:application name="com.yzd.dubbo.monitor.provider" logger="slf4j" organization="org-yzd" owner="master-yzd"/>
-    <dubbo:registry  id="defaultRegister" protocol="zookeeper"  address="${dubbo.registry.default.address}" group="${dubbo.registry.group}" />
+    <dubbo:registry  id="defaultRegister" protocol="zookeeper"  address="${dubbo.registry.default.address}" group="${dubbo.registry.group}" file="com.yzd.dubbo.monitor.provider.properties" />
     <dubbo:protocol name="dubbo" port="${dubbo.protocol.port}" payload="8388608"/>
     <dubbo:provider retries="0" timeout="60000" />
     <dubbo:service interface="com.alibaba.dubbo.monitor.MonitorService" ref="monitorService"  timeout="60000"/>
     <bean id="monitorService" class="com.yzd.dubbo.monitor.service.service.impl.MonitorServiceImpl" />
+    <dubbo:reference id="registryService" interface="com.alibaba.dubbo.registry.RegistryService" />
 </beans>
