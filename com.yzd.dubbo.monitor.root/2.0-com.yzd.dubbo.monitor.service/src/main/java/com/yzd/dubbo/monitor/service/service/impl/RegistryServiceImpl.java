@@ -40,6 +40,8 @@ public class RegistryServiceImpl implements RegistryServiceInf {
         //获得需要订阅的URL
         URL subscribeUrl = RegistryUtil.getSubscribeUrl();
         // 订阅符合条件的已注册数据，当有注册数据变更时自动推送.
+        // dubbo服务变化更新通知机制-当服务节点发生变化后会把当前节点最新的数据合发送给客户端;
+        // 相当于重新获得服务最新所有数据
         registry.subscribe(subscribeUrl, new NotifyListener() {
             public void notify(List<URL> urls) {
                 if (urls == null || urls.size() == 0) {
@@ -138,7 +140,6 @@ public class RegistryServiceImpl implements RegistryServiceInf {
                     if (Tool.getInterface(service).equals(urlService)
                             && (Constants.ANY_VALUE.equals(group) || StringUtils.isEquals(group, Tool.getGroup(service)))
                             && (Constants.ANY_VALUE.equals(version) || StringUtils.isEquals(version, Tool.getVersion(service)))) {
-
                         services.remove(service);
                     }
                 }
