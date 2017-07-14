@@ -1,4 +1,4 @@
-package com.yzd.dubbo.monitor.web.model.response;
+package com.yzd.dubbo.monitor.service.bo;
 
 import lombok.Data;
 import lombok.ToString;
