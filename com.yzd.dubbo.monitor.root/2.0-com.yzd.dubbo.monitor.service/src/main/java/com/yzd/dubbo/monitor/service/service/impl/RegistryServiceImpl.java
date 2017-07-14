@@ -42,6 +42,7 @@ public class RegistryServiceImpl implements RegistryServiceInf {
         // 订阅符合条件的已注册数据，当有注册数据变更时自动推送.
         // dubbo服务变化更新通知机制-当服务节点发生变化后会把当前节点最新的数据合发送给客户端;
         // 相当于重新获得服务最新所有数据
+        // 特别注意：只有当一个服务的所有程序都不存在时才会发url以empty开头的url处理，移除此服务的所有数据:
         registry.subscribe(subscribeUrl, new NotifyListener() {
             public void notify(List<URL> urls) {
                 if (urls == null || urls.size() == 0) {
