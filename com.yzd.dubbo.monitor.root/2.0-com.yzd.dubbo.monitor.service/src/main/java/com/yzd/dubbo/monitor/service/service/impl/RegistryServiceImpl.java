@@ -7,6 +7,7 @@ import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.registry.NotifyListener;
 import com.alibaba.dubbo.registry.RegistryService;
 import com.yzd.dubbo.monitor.service.service.inf.RegistryServiceInf;
+import com.yzd.dubbo.monitor.service.utils.tool.DubboConstant;
 import com.yzd.dubbo.monitor.service.utils.tool.RegistryUtil;
 import com.yzd.dubbo.monitor.service.utils.tool.Tool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,8 @@ public class RegistryServiceImpl implements RegistryServiceInf {
      * startMonitor:是否开始执行*/
     private final Map<String, Object> finalDataMap = new ConcurrentHashMap<>();
     //当前监测服务的dubbo注册名
-    String monitorDubboName ="com.yzd.dubbo.monitor.provider";
+    //String monitorDubboName ="com.yzd.dubbo.monitor.provider";
+    private final String monitorDubboName = DubboConstant.MONITOR_DUBBO_APPLICATION_NAME;
     @Autowired
     private RegistryService registry;
     @Override

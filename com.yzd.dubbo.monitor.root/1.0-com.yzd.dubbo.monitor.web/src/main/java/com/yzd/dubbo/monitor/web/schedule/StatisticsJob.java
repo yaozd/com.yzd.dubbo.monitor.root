@@ -39,7 +39,8 @@ public class StatisticsJob {
     @Scheduled(initialDelay = 3000, fixedDelay = 1000 * 15)
     public void saveData() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        logger.info("每隔15秒钟执行一次 " + dateFormat.format(new Date()));
+        //logger.info("每隔15秒钟执行一次 " + dateFormat.format(new Date()));
+        logger.info("启动批量导入redis消息队列中的数据到mysql数据库中任务 " + dateFormat.format(new Date()));
         List<InvokeDO> listInvokeDO;
         CountDownLatch latch;
         while (true) {

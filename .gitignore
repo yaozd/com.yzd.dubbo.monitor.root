@@ -51,3 +51,4 @@ target/
 Thumbs.db
 package-install/
 install-package/
+*.lock
