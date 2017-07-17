@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="zh" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="zh" class="ie9 no-js"> <![endif]-->
+<!--[if IE 8]>
+<html lang="zh" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="zh" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
 <html lang="zh">
 <!--<![endif]-->
@@ -8,24 +10,236 @@
 <head>
     <title>dubbo监控中心</title>
     #parse("common/head.html")
+    <style type="text/css">
+        .pricing:hover {
+            cursor: pointer;
+        }
+
+        /*日期按钮带边框*/
+        .board-btn {
+            border-radius: 25px !important;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border-color: #A8B7D4;
+            border-width: 2px;
+            color: #93a2a9;
+            font-family: "Open Sans", sans-serif;
+            background: white;
+        }
+
+        .board-btn:hover, .board-btn.actived {
+            font-family: "Open Sans", sans-serif;
+            background-color: #A8B7D4;
+            color: white;
+        }
+
+        .special {
+            font-family: "Ruthie", cursive;
+        }
+
+        .fail_app {
+            color: #F98273;
+            margin-left: 20px;
+        }
+
+        .success_app {
+            color: #71AEE4;
+            margin-left: 20px;
+        }
+
+        .badge {
+            margin-left: 10px;
+        }
+
+        .btn-more {
+            border: 1px solid #e9ecf3;
+            background-color: white;
+            color: #333333;
+            height: 30px;
+            width: 93px;
+            padding: 0;
+        }
+
+        .btn-more:hover, .btn-more:active {
+            background-color: #71AEE4;
+            color: white;
+        }
+
+        /*===========首页3个显示栏css=================*/
+        .show_row {
+            background-color: white;
+            border: 3px solid #e9ecf3;
+            margin-bottom: 20px;
+        }
+
+        .show_row:hover {
+            cursor: pointer;
+        }
+
+        /*内容*/
+        .show_content_row {
+            color: white;
+            padding: 35px 0;
+        }
+
+        .show_help {
+            display: block;
+            margin-top: 5px;
+            font-size: 10px;
+        }
+
+        .show_icon {
+            padding-top: 15px;
+            padding-right: 0;
+            text-align: center;
+        }
+
+        .show_name {
+            text-align: center;
+            font-size: 20px;
+        }
+
+        @media (min-width: 992px) {
+            .show_icon {
+                padding-top: 15px;
+                padding-right: 0;
+                text-align: right;
+            }
+
+            .show_name {
+                text-align: left;
+                font-size: 20px;
+            }
+        }
+
+        .show_icon i {
+            font-size: 40px;
+        }
+
+        /*文字*/
+        .show_num_div {
+            padding-top: 26px;
+            text-align: center;
+            color: #333333;
+        }
+
+        .show_main_num {
+            font-size: 50px;
+        }
+
+        .small_span {
+            /*font-size: 18px;*/
+        }
+    </style>
+
 </head>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo " style="overflow-x: hidden;">
 <!-- BEGIN HEADER -->
-    #parse("common/navbar.html")
+#parse("common/navbar.html")
 <!-- END HEADER -->
 <div class="clearfix">
 </div>
 <!-- BEGIN CONTAINER -->
 <div class="page-container ">
     <!-- BEGIN CONTENT -->
-    <div class="page-content-wrapper ">
-
+    <div class="row">
+        <div class="col-md-12">
+        <div class="page-head">
+            <div class="page-title" style="color: #333333">
+                <h1>首页
+                    <small>本系统数据均采集同一zk的dubbo项目</small>
+                </h1>
+            </div>
+        </div>
+            <div class="row margin-top-10" style="margin-left: 0px;margin-right: 0px;">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="row show_row" id="applicationBtn" style="border: 3px solid rgb(233, 236, 243);">
+                        <div class="col-md-8">
+                            <div class="row show_content_row" style="background-color: #F98273; ">
+                                <div class="col-md-4 show_icon">
+                                    <i class="icon-grid"></i>
+                                </div>
+                                <div class="col-md-8 show_name">
+                                    Application
+                                    <span class="show_help">dubbo服务的主服务</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 show_num_div" style="color: black;">
+                            <span class="show_main_num">3</span>
+                            <span class="small_span">个</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="row show_row" id="serviceBtn" style="border: 3px solid rgb(233, 236, 243);">
+                        <div class="col-md-8">
+                            <div class="row show_content_row" style="background-color: #71AEE4; ">
+                                <div class="col-md-4 show_icon">
+                                    <i class="icon-calendar"></i>
+                                </div>
+                                <div class="col-md-8 show_name">
+                                    Service
+                                    <span class="show_help">提供出的Service类</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 show_num_div" style="color: black;">
+                            <span class="show_main_num">2</span>
+                            <span class="small_span">个</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="row show_row" id="hostBtn">
+                        <div class="col-md-8">
+                            <div class="row show_content_row" style="background-color: #26D9AB; ">
+                                <div class="col-md-4 show_icon">
+                                    <i class="icon-list"></i>
+                                </div>
+                                <div class="col-md-8 show_name">
+                                    Host
+                                    <span class="show_help">所有运行的主机</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 show_num_div">
+                            <span class="show_main_num">1</span>
+                            <span class="small_span">个</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet light">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <span class="caption-subject  bold uppercase">所有服务间的依赖关系</span>
+                            <span class="caption-helper">圈越大，与其相关的app越多</span>
+                        </div>
+                        <div class="tools">
+                            <a href="" class="collapse" data-original-title="收起/展开" title="">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div id="all_app_relation_force_echarts" style="height:600px"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- END CONTENT -->
 </div>
 <!-- END CONTAINER -->
-    #parse("common/footer.html")
+#parse("common/footer.html")
+<script src=$UrlTool.href("/content/script/home/index.js")></script>
 </body>
 <!-- END BODY -->
 </html>

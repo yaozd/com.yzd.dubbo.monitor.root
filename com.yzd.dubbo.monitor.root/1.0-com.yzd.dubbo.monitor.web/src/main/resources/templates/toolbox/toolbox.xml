@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<toolbox>
+    <tool>
+        <key>UrlTool</key>
+        <scope>application</scope>
+        <class>com.yzd.dubbo.monitor.web.utils.toolbox.UrlHelperTool</class>
+    </tool>
+</toolbox>
