@@ -1,9 +1,58 @@
 /**
- * Created by zd.yao on 2017/7/17.
+ * Created by zd.yao on 2017/7/18.
  */
 $(function () {
+    initData();
     initeCharts();
+    applicationClick();
 });
+//region-初始化数据
+function initData(){
+    $.get("/application/getAllAPPAndRelation", function(resultVO){
+        dataToView(resultVO.data);
+    });
+}
+function dataToView(allAppResutMap){
+    $('#appSumNumber').html(allAppResutMap.appSum);
+    $('#groupSumNumber').html(allAppResutMap.groupSum);
+    // 拼接所有app数据
+    var noHtml = '<span class="badge badge-danger">无</span>';
+    var numberHtml = '<span class="badge badge-success">NUMBER</span>';
+    var providers_category_html = '<span class="badge badge-danger providers">提供者</span>';
+    var consumers_category_html = '<span class="badge badge-success consumers">消费者</span>';
+    //
+    var appList = allAppResutMap.appList;
+    var map = {
+        list: appList,
+        categoryFunc: function () {
+            var categoty_html = '';
+            var isProvider = this.isProvider;
+            var isConsumer = this.isConsumer;
+            if (isProvider) categoty_html += providers_category_html;
+            if (isConsumer) categoty_html += consumers_category_html;
+            return categoty_html;
+        },
+        serviceSumFunc: function () {
+            var sum = Number(this.serviceSum);
+            if (sum == 0) return noHtml;
+            return numberHtml.replace('NUMBER', sum);
+        },
+        providerSumFunc: function () {
+            var sum = Number(this.providerSum);
+            if (sum == 0) return noHtml;
+            return numberHtml.replace('NUMBER', sum);
+        },
+        consumerSumFunc: function () {
+            var sum = Number(this.consumerSum);
+            if (sum == 0) return noHtml;
+            return numberHtml.replace('NUMBER', sum);
+        }
+    };
+    var html = Mustache.render($('#main_app_list_template').html(), map);
+    $("#main_application_tbody").html(html);
+}
+//endregion-初始化数据
+//region-初始化依赖关系图表
 function initeCharts() {
     var urlPath="/content/echarts/dist";
     require.config({
@@ -165,3 +214,41 @@ function allAPPRelationForceChart(ec) {
         }
     });
 }
+//endregion-初始化依赖关系图表
+//region-点击应用
+function applicationClick(){
+    $("#main_application_tbody").on("click","tr",function(){
+        var provider_value = $(this).find(".providers").html();
+        var scroll_offset;  //得到pos这个div层的offset，包含两个值，top和left
+        var appName = $(this).data("appname");
+        var html = Mustache.render($('#echarts_section_template').html(), {});
+        $("#echarts_section").html(html);
+        $('#echarts_section').removeClass("hidden");
+        //
+        //finalSectionFunction();
+        //
+        scroll_offset = $("#scroll_offset_anchor").offset();  //得到pos这个div层的offset，包含两个值，top和left
+        if (provider_value == undefined) {
+            $("#services_section").addClass("hidden");
+            $("#alert_section").html(Mustache.render($('#alert_danger_template').html(), {appName: appName}));
+            $("#services_app_span").text(appName);
+            //aPPRelationForceChart(appName);
+            //服务数据图表隐藏
+            $("#tab_app_data_btn").addClass("hidden");
+            $("#tab_app_ranking_btn").addClass("hidden");
+        } else {
+            $("#services_section").removeClass("hidden");
+            $("#alert_section").html("");
+            //initServiceTable(appName);
+            //aPPRelationForceChart(appName);
+            //服务数据图表出现
+            $("#tab_app_data_btn").removeClass("hidden");
+            $("#tab_app_ranking_btn").removeClass("hidden");
+        }
+        console.log(scroll_offset.top);
+        $('body').animate({
+            scrollTop: scroll_offset.top-100  //让body的scrollTop等于pos的top，就实现了滚动
+        }, 1200);
+    });
+}
+//endregion-点击应用

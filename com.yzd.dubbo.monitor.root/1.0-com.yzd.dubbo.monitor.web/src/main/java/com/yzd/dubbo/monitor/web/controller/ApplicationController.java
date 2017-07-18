@@ -20,6 +20,13 @@ import java.util.*;
 public class ApplicationController {
     @Autowired
     private ApplicationServiceInf applicationService;
+
+    @RequestMapping("index")
+    public String index(){
+
+        return "application/index";
+    }
+
     //所有服务和其相关信息
     @RequestMapping(value = "/getAllAPPAndRelation", method = RequestMethod.GET)
     @ResponseBody
