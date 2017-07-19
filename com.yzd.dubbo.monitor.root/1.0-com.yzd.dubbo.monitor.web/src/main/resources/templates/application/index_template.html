@@ -71,13 +71,13 @@
 
 <script type="text/template" id="service_table_tbody_template">
     {{#list}}
-    <tr class="service" data-servicename="{{serviceName}}">
+    <tr class="service" data-servicename="{{serviceName}}{{hostFunc}}">
         <td>{{{indexFunc}}}</td>
         {{#wrongFunc}}
         <td>{{.}}</td>
         {{/wrongFunc}}
         <td style="text-align: left">
-            {{serviceName}}
+            {{serviceName}}{{hostFunc}}
         </td>
         <td>{{owner}}</td>
         <td class="consumers">
