@@ -10,7 +10,7 @@
         </td>
         <td style="text-align: left">
             {{#hostList}}
-            {{hostString}}<br>
+            {{hostString}}|{{createTime}}<br>
             {{/hostList}}
         </td>
         <td>
@@ -83,6 +83,7 @@
         <td class="consumers">
             {{{consumersFunc}}}
         </td>
+        <td>{{finalCreateTime}}</td>
         <td>{{finalConsumerTime}}</td>
     </tr>
     <tr class="hidden method">
@@ -117,6 +118,7 @@
                         <th>service</th>
                         <th>负责人</th>
                         <th>有无被消费</th>
+                        <th>服务创建时间</th>
                         <th>最后消费时间</th>
                     </tr>
                     </thead>

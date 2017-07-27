@@ -2,7 +2,11 @@ package com.yzd.dubbo.monitor.service.utils.tool;
 
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
+import com.yzd.dubbo.monitor.common.timeExt.TimeUtil;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -65,6 +69,38 @@ public class Tool {
             }
         }
         return result;
+    }
+    public static String getUrlTimeInfo(URL url) {
+        String timestamp = url.getParameter(Constants.TIMESTAMP_KEY);
+        Date now;
+        if (timestamp == null || timestamp.length() == 0) {
+           return "";
+        } else if (timestamp.length() == "yyyyMMddHHmmss".length()) {
+            try {
+                now = new SimpleDateFormat("yyyyMMddHHmmss").parse(timestamp);
+            } catch (ParseException e) {
+                throw new IllegalStateException(e);
+            }
+        } else {
+            now = new Date(Long.parseLong(timestamp));
+        }
+        return TimeUtil.getFullTimeString(now);
+    }
+    public static String getUrlShortTimeInfo(URL url) {
+        String timestamp = url.getParameter(Constants.TIMESTAMP_KEY);
+        Date now;
+        if (timestamp == null || timestamp.length() == 0) {
+            return "";
+        } else if (timestamp.length() == "yyyyMMddHHmmss".length()) {
+            try {
+                now = new SimpleDateFormat("yyyyMMddHHmmss").parse(timestamp);
+            } catch (ParseException e) {
+                throw new IllegalStateException(e);
+            }
+        } else {
+            now = new Date(Long.parseLong(timestamp));
+        }
+        return TimeUtil.getFullTimeString(now);
     }
 
 }

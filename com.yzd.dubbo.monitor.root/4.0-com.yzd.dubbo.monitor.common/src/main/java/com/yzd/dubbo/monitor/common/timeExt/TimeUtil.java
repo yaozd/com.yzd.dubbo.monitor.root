@@ -17,4 +17,14 @@ public class TimeUtil {
         String str2 = formatter.format(date);
         return str2;
     }
+    public static String getFullTimeString(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
+        String str2 = formatter.format(date);
+        return str2;
+    }
+    public static String getFullShortTimeString(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat( "yyyyMMddHHmmss");
+        String str2 = formatter.format(date);
+        return str2;
+    }
 }

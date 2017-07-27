@@ -93,6 +93,7 @@ public class ApplicationServiceImpl implements ApplicationServiceInf {
                 String host = url.getHost();
                 String port = String.valueOf(url.getPort());
                 HostBO hostBO = new HostBO(host,port);
+                hostBO.setCreateTime(Tool.getUrlShortTimeInfo(url));
                 hostList.add(hostBO);
                 applicationBO.setHostList(hostList);
                 applicationBO.setIsProvider(true);
@@ -121,19 +122,20 @@ public class ApplicationServiceImpl implements ApplicationServiceInf {
                 String organization = url.getParameter(MonitorConstants.ORGANICATION);
 
                 ApplicationBO consumerApplicationBO = appMap.get(applicationName);
+                HostBO hostBO=new HostBO(url.getHost(),null);
+                hostBO.setCreateTime(Tool.getUrlShortTimeInfo(url));
                 if (null == consumerApplicationBO) {
                     // 此app 未提供服务
                     consumerApplicationBO = new ApplicationBO();
                     consumerApplicationBO.setApplicationName(applicationName);
                     if(StringUtils.isEmpty(consumerApplicationBO.getOrganization())) consumerApplicationBO.setOrganization(organization == null ? "" : organization);
-
-                    hostList.add(new HostBO(url.getHost(),null));
+                    hostList.add(hostBO);
                     consumerApplicationBO.setHostList(hostList);
                     appMap.put(applicationName, consumerApplicationBO);
                 }else if (!consumerApplicationBO.getIsProvider()) {
                     // 未提供app服务的host
                     hostList = consumerApplicationBO.getHostList();
-                    hostList.add(new HostBO(url.getHost(),null));
+                    hostList.add(hostBO);
                     consumerApplicationBO.setHostList(hostList);
                 }
 
@@ -185,8 +187,10 @@ public class ApplicationServiceImpl implements ApplicationServiceInf {
         String port = String.valueOf(url.getPort());
         HostBO hostBO = new HostBO(host,port);
         //todo 最新更新时间
+        //todo 临时将服务最新更新时间改为创建时间
         //String finalTime = MonitorService.getServiceConsumerTime(serviceName, host);
         String finalTime = "";
+        String createTime = Tool.getUrlTimeInfo(url);
 
         Map<String,Set<ServiceBO>> thisServiceMap = applicationBO.getServiceMap();
         if(null == thisServiceMap) thisServiceMap = new HashMap<>();
@@ -221,6 +225,7 @@ public class ApplicationServiceImpl implements ApplicationServiceInf {
         serviceBO.setMethodsHost(methodsHost);
         serviceBO.setMethods(methodSet);
         serviceBO.setFinalConsumerTime(finalTime);
+        serviceBO.setFinalCreateTime(createTime);
 
         //正式环境判断
         if(serviceName.endsWith("1.0.0")){

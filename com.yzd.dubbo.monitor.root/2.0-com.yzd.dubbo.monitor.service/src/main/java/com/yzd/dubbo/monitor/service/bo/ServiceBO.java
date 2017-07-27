@@ -45,5 +45,6 @@ public class ServiceBO {
 
     //最后消费时间
     private String finalConsumerTime = "1997-01-01 00:00:00";
+    private String finalCreateTime = "1997-01-01 00:00:00";
 
 }
