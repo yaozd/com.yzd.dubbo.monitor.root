@@ -12,6 +12,8 @@ import java.util.Map;
  */
 public class MonitorConstants {
     public static final String DUBBO_APPLICATION_NAME = ConfigUtils.getProperty("dubbo.application.name");
+    public static final String DUBBO_REGISTRY_GROPU = ConfigUtils.getProperty("dubbo.registry.group");
+    public static final String DUBBO_REGISTRY_ADDRESS = ConfigUtils.getProperty("dubbo.registry.default.address");
     public static final String OWNER = "owner";
     public static final String ORGANICATION = "organization";
 

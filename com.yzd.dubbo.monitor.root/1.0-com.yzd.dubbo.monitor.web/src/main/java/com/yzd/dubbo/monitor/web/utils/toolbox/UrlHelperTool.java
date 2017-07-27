@@ -1,5 +1,7 @@
 package com.yzd.dubbo.monitor.web.utils.toolbox;
 
+import com.yzd.dubbo.monitor.service.utils.tool.RegistryUtil;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
@@ -55,6 +57,10 @@ public class UrlHelperTool {
             md5.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1));
         }
         return md5.toString();
+    }
+
+    public String getRegistryAddressInfo(){
+        return RegistryUtil.getAddressInfo();
     }
 
 }

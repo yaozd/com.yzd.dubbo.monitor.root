@@ -33,4 +33,7 @@ public class RegistryUtil {
         }
         return false;
     }
+    public static String getAddressInfo() {
+        return "address="+MonitorConstants.DUBBO_REGISTRY_ADDRESS+"|"+"group="+MonitorConstants.DUBBO_REGISTRY_GROPU;
+    }
 }
