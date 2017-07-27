@@ -4,7 +4,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
@@ -16,7 +15,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ComponentScan("com.yzd.dubbo.monitor.web,com.yzd.dubbo.monitor.service")
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 @ImportResource("classpath:com.yzd.dubbo.monitor.provider.xml")
-@EnableScheduling
+//todo 目前版本为运维版-关闭数据导入服务与数据收集服务
+//@EnableScheduling
 public class ApplicationMonitorWeb {
     /**
      * Used when run as JAR

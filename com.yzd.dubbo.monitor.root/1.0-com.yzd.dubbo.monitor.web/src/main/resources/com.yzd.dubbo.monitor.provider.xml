@@ -36,7 +36,8 @@
     <dubbo:registry  id="defaultRegister" protocol="zookeeper"  address="${dubbo.registry.default.address}" group="${dubbo.registry.group}" file="${dubbo.application.name}.registry.cache" />
     <dubbo:protocol name="dubbo" port="${dubbo.protocol.port}" payload="8388608"/>
     <dubbo:provider retries="0" timeout="60000" />
-    <dubbo:service interface="com.alibaba.dubbo.monitor.MonitorService" ref="monitorService"  timeout="60000"/>
-    <bean id="monitorService" class="com.yzd.dubbo.monitor.service.service.impl.MonitorServiceImpl" />
+    <!--关闭数据收集服务-->
+    <!-- <dubbo:service interface="com.alibaba.dubbo.monitor.MonitorService" ref="monitorService"  timeout="60000"/>
+    <bean id="monitorService" class="com.yzd.dubbo.monitor.service.service.impl.MonitorServiceImpl" />-->
     <dubbo:reference id="registryService" interface="com.alibaba.dubbo.registry.RegistryService" />
 </beans>

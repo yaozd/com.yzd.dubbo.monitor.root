@@ -13,6 +13,7 @@ public class HomeController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
     @RequestMapping(value = {"", "/index"})
     public String Index(){
-        return "home/index";
+        //return "home/index";
+        return "forward:/application/index";
     }
 }
