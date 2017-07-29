@@ -243,6 +243,8 @@ function applicationClick(){
             $("#alert_section").html("");
             //创建应用的服务列表
             initServiceTable(appName);
+            //显示所有服务
+            displayAllService();
             //aPPRelationForceChart(appName);
             //服务数据图表出现
             $("#tab_app_data_btn").removeClass("hidden");
@@ -259,7 +261,7 @@ function initServiceTable(appName) {
     var appMap = allAppResutMap.allApp;
     var appBO = appMap[appName];
     var serviceMap = appBO.serviceMap;
-
+    var hostList=appBO.hostList;
     var tabs_list = [];
     var tab_first = true;
 
@@ -327,6 +329,8 @@ function initServiceTable(appName) {
         };
         var tbody_html = Mustache.render($('#service_table_tbody_template').html(), map);
         content_map['tbody_html'] = tbody_html;
+        var service_address_html = Mustache.render($('#service_address_templates').html(), {'list':hostList});
+        content_map['service_address_html'] = service_address_html;
         content_list.push(content_map);
     });
 
@@ -377,27 +381,38 @@ function filterAppTable() {
 //endregion-点击应用
 
 function inputFunction() {
-
     $('#search_app_value').keyup(function () {
         filterAppTable();
         return false;
     });
     $('#search_service_value').keyup(function () {
-        var key_value = $("#search_service_value").val().trim().toUpperCase();
-        var all_tr = $('#all_service_div > div > div.active>div>table>tbody>tr.service');
-        if (key_value == '') {
-            $(all_tr).removeClass("hidden");
-        } else {
-            $.each(all_tr, function (i, obj) {
-                var value = $(obj).data("servicename").toUpperCase();
-                console.log(value);
-                if (value.indexOf(key_value) == -1) {
-                    $(obj).addClass("hidden");
-                } else {
-                    $(obj).removeClass("hidden");
-                }
-            });
-        }
+        searchService()
         return false;
     });
+    $(document).on("click",'#service_address_id span',function(){
+        var value = $(this).data("serviceaddress");
+        $('#search_service_value').val(value);
+        searchService();
+    });
 };
+function displayAllService(){
+    $('#search_service_value').val("");
+    searchService();
+}
+function searchService(){
+    var key_value = $("#search_service_value").val().trim().toUpperCase();
+    var all_tr = $('#all_service_div > div > div.active>div>table>tbody>tr.service');
+    if (key_value == '') {
+        $(all_tr).removeClass("hidden");
+    } else {
+        $.each(all_tr, function (i, obj) {
+            var value = $(obj).data("servicename").toUpperCase();
+            //console.log(value);
+            if (value.indexOf(key_value) == -1) {
+                $(obj).addClass("hidden");
+            } else {
+                $(obj).removeClass("hidden");
+            }
+        });
+    }
+}
