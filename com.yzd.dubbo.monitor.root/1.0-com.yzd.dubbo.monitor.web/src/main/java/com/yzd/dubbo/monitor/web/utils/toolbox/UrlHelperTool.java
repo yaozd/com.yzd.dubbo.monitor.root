@@ -22,19 +22,28 @@ public class UrlHelperTool {
         if (hrefVal != null) return hrefVal;
         String file = "/static" + hrefKey;//static是静态文件的根目录
         //
-        InputStream is = getInputStream(file);
-        if (is == null) {
-            hrefVal = hrefKey + "?throwException-NoFoundFile";
-            urlMap.put(hrefKey, hrefVal);
-            return "\"" + hrefVal + "\"";
-        }
+        InputStream is=null;
         try {
+            is = getInputStream(file);
+            if (is == null) {
+                hrefVal = hrefKey + "?throwException-NoFoundFile";
+                urlMap.put(hrefKey, hrefVal);
+                return "\"" + hrefVal + "\"";
+            }
+
             String md5 = getMD5(is);
             hrefVal = hrefKey + "?" + md5;
             urlMap.put(hrefKey, hrefVal);
             return "\"" + hrefVal + "\"";
         } catch (Exception ex) {
             throw new RuntimeException(ex);
+        }
+        finally {
+            if(is!=null) try {
+                is.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -59,7 +68,7 @@ public class UrlHelperTool {
         return md5.toString();
     }
 
-    public String getRegistryAddressInfo(){
+    public String getRegistryAddressInfo() {
         return RegistryUtil.getAddressInfo();
     }
 
