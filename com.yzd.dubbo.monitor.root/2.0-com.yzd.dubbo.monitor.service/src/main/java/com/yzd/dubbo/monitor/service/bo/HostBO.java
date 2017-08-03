@@ -15,6 +15,8 @@ public class HostBO {
     private String port;
     //增加了服务的创建时间
     private String createTime;
+    //增加当前应用的版本号-application.version
+    private String appVersion;
 
     public HostBO(){}
     public HostBO(String host, String port) {

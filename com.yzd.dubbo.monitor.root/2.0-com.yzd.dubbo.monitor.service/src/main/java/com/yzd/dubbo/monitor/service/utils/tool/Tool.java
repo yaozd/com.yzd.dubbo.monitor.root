@@ -103,4 +103,14 @@ public class Tool {
         return TimeUtil.getFullTimeString(now);
     }
 
+    /**
+     * 增加当前应用的版本号-application.version
+     * @param url
+     * @return
+     */
+    public static String getAppVersionInfo(URL url){
+        String version=url.getParameter("application.version");
+        return version==null?"":version;
+    }
+
 }

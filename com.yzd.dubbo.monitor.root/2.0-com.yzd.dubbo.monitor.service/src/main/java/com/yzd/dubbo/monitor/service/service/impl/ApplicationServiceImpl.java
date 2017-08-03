@@ -94,6 +94,7 @@ public class ApplicationServiceImpl implements ApplicationServiceInf {
                 String port = String.valueOf(url.getPort());
                 HostBO hostBO = new HostBO(host,port);
                 hostBO.setCreateTime(Tool.getUrlShortTimeInfo(url));
+                hostBO.setAppVersion(Tool.getAppVersionInfo(url));
                 hostList.add(hostBO);
                 applicationBO.setHostList(hostList);
                 applicationBO.setIsProvider(true);
@@ -124,6 +125,7 @@ public class ApplicationServiceImpl implements ApplicationServiceInf {
                 ApplicationBO consumerApplicationBO = appMap.get(applicationName);
                 HostBO hostBO=new HostBO(url.getHost(),null);
                 hostBO.setCreateTime(Tool.getUrlShortTimeInfo(url));
+                hostBO.setAppVersion(Tool.getAppVersionInfo(url));
                 if (null == consumerApplicationBO) {
                     // 此app 未提供服务
                     consumerApplicationBO = new ApplicationBO();
