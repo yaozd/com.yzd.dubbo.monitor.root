@@ -219,7 +219,7 @@ function allAPPRelationForceChart(ec) {
 //endregion-初始化依赖关系图表
 //region-点击应用
 function applicationClick(){
-    $("#main_application_tbody").on("click","tr",function(){
+    $("#main_application_tbody").on("click",".primary-link",function(){
         var provider_value = $(this).find(".providers").html();
         var scroll_offset;  //得到pos这个div层的offset，包含两个值，top和left
         var appName = $(this).data("appname");
