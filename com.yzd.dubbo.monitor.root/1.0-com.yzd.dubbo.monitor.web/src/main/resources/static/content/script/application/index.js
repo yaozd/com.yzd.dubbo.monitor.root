@@ -220,9 +220,10 @@ function allAPPRelationForceChart(ec) {
 //region-点击应用
 function applicationClick(){
     $("#main_application_tbody").on("click",".primary-link",function(){
-        var provider_value = $(this).find(".providers").html();
+        var trObject=$(this).parent().parent();
+        var provider_value = trObject.find(".providers").html();
         var scroll_offset;  //得到pos这个div层的offset，包含两个值，top和left
-        var appName = $(this).data("appname");
+        var appName = trObject.data("appname");
         var html = Mustache.render($('#echarts_section_template').html(), {});
         $("#echarts_section").html(html);
         $('#echarts_section').removeClass("hidden");
