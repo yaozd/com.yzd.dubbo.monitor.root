@@ -251,9 +251,12 @@ function applicationClick(){
             $("#tab_app_data_btn").removeClass("hidden");
             $("#tab_app_ranking_btn").removeClass("hidden");
         }
-        $('body').animate({
+        var h=scroll_offset.top-100;
+        $("html,body").animate({"scrollTop":h})
+        //$(document).scrollTop(h);
+        /*$('body').animate({
             scrollTop: scroll_offset.top-100  //让body的scrollTop等于pos的top，就实现了滚动
-        }, 1200);
+        }, 1200);*/
     });
 }
 //===========================二级方法=================
